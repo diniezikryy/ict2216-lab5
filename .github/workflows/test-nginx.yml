@@ -1,0 +1,38 @@
+name: Test Nginx Configuration
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test-nginx:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v3
+
+      - name: Test Nginx configuration
+        run: |
+          cd nginx-proxy
+          docker-compose -f nginx-compose.yml config
+
+      - name: Start Nginx service
+        run: |
+          cd nginx-proxy
+          docker-compose -f nginx-compose.yml up -d
+
+      - name: Test HTTP endpoint
+        run: |
+          sleep 5
+          curl -f http://localhost/ || exit 1
+
+      - name: Clean up
+        run: |
+          cd nginx-proxy
+          docker-compose -f nginx-compose.yml down
