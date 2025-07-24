@@ -20,12 +20,12 @@ jobs:
       - name: Test Nginx configuration
         run: |
           cd nginx-proxy
-          docker-compose -f nginx-compose.yml config
+          docker compose -f nginx-compose.yml config
 
       - name: Start Nginx service
         run: |
           cd nginx-proxy
-          docker-compose -f nginx-compose.yml up -d
+          docker compose -f nginx-compose.yml up -d
 
       - name: Test HTTP endpoint
         run: |
@@ -35,4 +35,4 @@ jobs:
       - name: Clean up
         run: |
           cd nginx-proxy
-          docker-compose -f nginx-compose.yml down
+          docker compose -f nginx-compose.yml down
